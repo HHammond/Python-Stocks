@@ -55,6 +55,7 @@ defaultQuery	= 'sl1c1w1n'
 defaultStocks = "aapl,msft,goog"
 marketTime = {'open':0,'close':24}
 defaultCache = 'cache.sqlite'
+titleWidth = 8
 yahooStockCommands = """
 a	 Ask	 
 a2	 Average Daily Volume	 
@@ -234,8 +235,11 @@ class BackupManager:
 
 	def getLatestTime(self):
 		c = self.conn.cursor()
-		data = c.execute('SELECT time FROM backups ORDER BY time');
-		return data.fetchall()[-1][0]
+		try:
+			data = c.execute('SELECT time FROM backups ORDER BY time');
+			return data.fetchall()[-1][0]
+		except:
+			return []
 
 	def getLatest(self,query='default',titles=True,length=0):
 		data = self.getLatestCSV()
