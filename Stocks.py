@@ -535,14 +535,21 @@ class StockManager:
 
 def getStockList(file):
 	#load stock list from given filepath
-	f = open(file,'r')
-	data = f.read().split('\n')
-	f.close()
-	return sorted(data)
+	try:
+		f = open(file,'r')
+		data = f.read().split('\n')
+		f.close()
+		return sorted(data)
+	except:
+		return defaultStocks.split(',');
 
 def getModuleDirectory():
-	#return the path to this module's directory
-	return sys.argv[0][0:sys.argv[0].rindex(os.path.sep)+1]
+	if( sys.argv[0] == 'stocks.py' ):
+		#we are in directory
+		return '.'
+	else:
+		#return the path to this module's directory
+		return sys.argv[0][0:sys.argv[0].rindex(os.path.sep)+1]
 
 def isTradingTime(tradingTime={'open':8,'close':16}):
 	#for use with automated updates
@@ -683,8 +690,12 @@ if __name__ == "__main__":
 			except Exception, e:
 				print e
 
-			if data != backup.getLatestCSV():
-				backup.backup(data)
+			try:
+				if data != backup.getLatestCSV():
+					backup.backup(data)
+			except:
+				#file not found exception
+				pass
 
 	state = ''
 	if not isTradingTime(marketTime):
