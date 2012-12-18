@@ -544,7 +544,7 @@ def getStockList(file):
 		return defaultStocks.split(',');
 
 def getModuleDirectory():
-	if( sys.argv[0] == 'stocks.py' ):
+	if( sys.argv[0] == 'Stocks.py' ):
 		#we are in directory
 		return '.'
 	else:
